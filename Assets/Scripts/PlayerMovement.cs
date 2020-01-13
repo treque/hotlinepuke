@@ -23,7 +23,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(GetInputTranslationDirection() * speed * Time.deltaTime, Space.World);
+        if (bIsMoving)
+        {
+            transform.Translate(GetInputTranslationDirection() * speed * Time.deltaTime, Space.World);
+        }
+        UpdateIsMoving();
         CursorRotate();
     }
 
@@ -35,7 +39,6 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 GetInputTranslationDirection()
     {
-        bIsMoving = true;
         Vector3 direction = new Vector3();
         if (Input.GetKey(KeyCode.W))
         {
@@ -53,10 +56,18 @@ public class PlayerMovement : MonoBehaviour
         {
             direction += Vector3.right;
         }
+        return direction;
+    }
+    
+    void UpdateIsMoving()
+    {
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W))
+        {
+            bIsMoving = true;
+        }
         else
         {
             bIsMoving = false;
         }
-        return direction;
     }
 }
